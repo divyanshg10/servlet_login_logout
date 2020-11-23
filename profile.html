@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>Profile</title>
+        <script src="jquery.js"></script>
+    </head>
+    <body>
+        <fieldset>
+            <legend>Details</legend>
+            Username:<input type="text" name="username" onblur="update(this,'username');"><br>
+            Name:<input type="text" name="name" onblur="update(this,'name');"><br>
+            Father's Name:<input type="text" name="fname" onblur="update(this,'fname');"><br>
+            Address:<input type="text" name="address" onblur="update(this,'address');"><br>
+            Number:<input type="number" name="number" onblur="update(this,'number');"><br>
+            Email:<input type="text" name="email" onblur="update(this,'email');"><br>
+        </fieldset>
+        <button>Logout</button>
+        <script>
+            username="";
+            $(document).ready(function(){
+                $.get("check",function(data,status){
+                    if(data==0){
+                        window.location.replace("login.html");
+                    }else{
+                        $.get("getData",function(data,status){
+                            displayData(data);
+                        });
+                    }
+                });
+                $("button").click(function(){
+                    $.get("logout",function(data,status){
+                        if(status=="success"){
+                            window.location.replace("login.html");
+                        }
+                    });
+                });
+            });
+            function displayData(data){
+                var fields=data.split(",");
+                username=fields[0];
+                var arr=document.getElementsByTagName("input");
+                for(i=0;i<6;i++){
+                    arr[i].value=fields[i];
+                    if(i==4&&fields[i]==-1){
+                        arr[i].value="";
+                    }
+                    if(i==1||i==2||i==0){
+                        if(fields[i]!=""){
+                            arr[i].setAttribute("readonly","");
+                        }
+                    }
+                }
+            }
+            function update(element,field){
+                var xmlhttp;
+                if(window.XMLHttpRequest){
+                    xmlhttp=new XMLHttpRequest();
+                }else{
+                    xmlhttp=new ActiveXObject("MICROSOFT.XMLHTTP");
+                }
+                var parameter="username="+username+"&field="+field+"&value="+element.value;
+                xmlhttp.open("post","update",true);
+                xmlhttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+                xmlhttp.send(parameter);
+            }
+        </script>
+    </body>
+</html>

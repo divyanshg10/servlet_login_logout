@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Login Page</title>
+        <style>
+            #username,#password,input[type=submit]{
+                width:100%;
+            }
+        </style>
+        <script src="jquery.js"></script>
+    </head>
+    <body onload="checkuser();">
+        <fieldset>
+            <legend>LOG IN</legend>
+            <form method="post" action="login">
+                <label for="username">Username:</label><input type="text" name="username" id="username" required><br>
+                <label for="password">Password:</label><input type="password" name="password" id="password" required><br>
+                <input type="checkbox" value="1" name="remember" id="remember"><label for="remember">Remember me</label><br>
+                <input type="submit" value="Login">
+            </form>
+        </fieldset>
+        <script>
+            $(document).ready(function(){
+                $.get("check",function(data,status){
+                    if(data!=0){
+                        window.location.replace("profile.html");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

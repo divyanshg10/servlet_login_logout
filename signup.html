@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>signup</title>
+        <style>
+            input[type=submit],#username,#password,#confirmpassword{
+                width: 100%;
+            }
+        </style>
+        <script src="jquery.js"></script>
+    </head>
+    <body>
+        <fieldset>
+            <legend>Signup</legend>
+            <form method="post" action="signup">
+                <p id="message"></p>
+                <label for="username">Username:</label><input type="text" onblur="validateUsername(this);" minlength="4" name="username" id="username" required><br>
+                <label for="password">Password:</label><input type="password" name="password" id="password" minlength="4" required><br>
+                <label for="confirmpassword">Confirm Password:</label><input type="password" onblur="confirmPassword(this);" name="confirmpassword" id="confirmpassword" required><br>
+                <input type="submit">
+            </form>
+        </fieldset>
+        <script>
+            function showMessage(str){
+                document.getElementById("message").innerHTML=str;
+            }
+            function validateUsername(x){
+                // console.log("inside validate email");
+                var pattern=new RegExp("^[a-zA-Z0-9_]+$");
+                if(!pattern.test(x.value)){
+                    x.value="";
+                    x.focus();
+                    showMessage("Username can only contain alphanumeric characters");
+                }
+            }
+            function confirmPassword(x){
+                var password=document.getElementById("password");
+                if(password.value!=""&&password.value!=x.value){
+                    x.value="";
+                    showMessage("Password does not match");
+                }
+            }
+            $(document).ready(function(){
+                $.get("check",function(data,status){
+                    // alert(data);
+                    if(data!=0){
+                        window.location.replace("profile.html");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
